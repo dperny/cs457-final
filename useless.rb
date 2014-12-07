@@ -1,5 +1,7 @@
 # useless.rb
 
+# A useless database adapter, which works on an array of hashes and lets you
+# query it like a NoSQL database
 class Useless
   # Creates a new Useless adapter for the object passed in
   #
