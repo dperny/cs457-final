@@ -27,6 +27,22 @@ class Useless
   end
 
   def count(field)
+    count = 0
+    @store.each do |entry|
+      count += 1 if entry.has_key?(field)
+    end
+    count
+  end
 
+  def min(field)
+    min = nil
+    @store.each do |entry|
+      if entry.has_key?(field)
+        if !min or min > entry[field].to_i 
+          min = entry[field].to_i 
+        end
+      end
+    end
+    min
   end
 end
