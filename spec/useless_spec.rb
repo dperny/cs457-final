@@ -76,4 +76,18 @@ describe Useless do
       expect(@db.min("field4")).to be nil
     end
   end
+
+  describe "#cartprod" do
+    it "should produce the cartesian product of two fields" do
+      expected_data = [
+        {
+          "field2" => "2", "field3" => "3"
+        },{
+          "field2" => "2", "field3" => "3"
+        }
+      ]
+
+      expect(@db.cartprod("field2","field3")).to match_array(expected_data)
+    end
+  end
 end

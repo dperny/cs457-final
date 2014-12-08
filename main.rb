@@ -1,33 +1,19 @@
-require './useless.rb'
-require 'json'
+require './transmogrifier'
+require './useless'
 
 trap("SIGINT") do
   puts "\nBye!"
   exit!
 end
 
-def transmogrify(filename)
-  contents = []
-  File.open(filename) do |file|
-    file.readlines.each do |line|
-      record = {}
-      line.split(" ").each_slice(2) do |field|
-        record[field[0].chomp(":")] = field[1]
-      end
-      contents << record
-    end
-  end
-  contents
-end
-
 def main
-
-  db = Useless.new(transmogrify(args[1]))
+  db = Useless.new(Transmogrifier.read(ARGV[0]))
   
   loop do
     print "> "
-    command = gets.chomp
-    db.eval command
+    command = STDIN.gets.chomp
+    result = Transmogrifier.eval(db, command)
+    STDOUT.puts Transmogrifier.print(result)
   end
 end
 

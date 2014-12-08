@@ -1,4 +1,5 @@
 # useless.rb
+require 'set'
 
 # A useless database adapter, which works on an array of hashes and lets you
 # query it like a NoSQL database
@@ -20,7 +21,7 @@ class Useless
     output = []
     @store.each do |entry|
       if entry.to_set.superset? conditions.to_set
-        output << if fields then entry.select { |k,v| fields.include?(k) } else entry end
+        output << unless fields.empty? then entry.select { |k,v| fields.include?(k) } else entry end
       end
     end
     output
@@ -44,5 +45,19 @@ class Useless
       end
     end
     min
+  end
+
+  def cartprod(left, right)
+    results = []
+    @store.each do |leftcol|
+      if leftcol.has_key? left
+        @store.each do |rightcol|
+          if rightcol.has_key? right
+            results << {left => leftcol[left], right => rightcol[right]}
+          end
+        end
+      end
+    end
+    results
   end
 end
